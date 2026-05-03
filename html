@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thư Viện Tài Liệu CTV - Bảo Hiểm Ngôi Nhà Xanh</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f5f7f5; color: #1a1a1a;
+    min-height: 100vh; padding-bottom: 40px;
+  }
+  .container { max-width: 680px; margin: 0 auto; padding: 16px; }
+
+  /* Header & Hotline */
+  .lib-header {
+    background: linear-gradient(135deg, #0a5c2e 0%, #1a8a4a 100%);
+    padding: 14px 20px; border-radius: 16px; margin-bottom: 16px;
+    display: flex; align-items: center; gap: 14px;
+    box-shadow: 0 4px 20px rgba(10,92,46,0.25);
+  }
+  .lib-logo-wrap {
+    width: 72px; height: 52px; border-radius: 10px; background: #fff;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; overflow: hidden; padding: 6px 8px;
+  }
+  .lib-logo-wrap img { width: 100%; height: 100%; object-fit: contain; }
+  .lib-title { color: #fff; font-size: 18px; font-weight: 600; }
+  .lib-sub   { color: rgba(255,255,255,0.7); font-size: 13px; margin-top: 3px; }
+
+  .hotline-bar {
+    background: #e1f5ee; border: 1px solid #9fe1cb;
+    border-radius: 12px; padding: 11px 16px;
+    display: flex; align-items: center; gap: 10px; margin-bottom: 14px;
+  }
+  .hotline-text { font-size: 13px; font-weight: 500; color: #0f6e56; }
+  .hotline-num  { font-size: 16px; font-weight: 700; color: #0a5c2e; margin-left: auto; }
+
+  /* Tabs Navigation */
+  .tabs { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
+  .tab {
+    padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 500;
+    border: 1px solid #d0d0d0; cursor: pointer; background: #fff; color: #555;
+    transition: all 0.15s;
+  }
+  .tab.active { background: #0a5c2e; color: #fff; border-color: #0a5c2e; }
+
+  /* Content Sections */
+  .section { display: none; }
+  .section.active { display: block; }
+  
+  /* Căn lề lùi vào cho tab Bán hàng và Thi đua */
+  #section-sales, #section-contest {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .card-group { margin-bottom: 14px; }
+  .card-group-title {
+    font-size: 11px; font-weight: 600; color: #888;
+    text-transform: uppercase; letter-spacing: 0.07em;
+    margin-bottom: 8px; padding-left: 2px;
+  }
+
+  /* Document Cards */
+  .doc-card {
+    background: #fff; border: 1px solid #e8e8e8; border-radius: 12px;
+    margin-bottom: 6px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  }
+  .doc-card-header {
+    padding: 12px 16px; display: flex; align-items: center;
+    justify-content: space-between; cursor: pointer; gap: 10px;
+  }
+  .doc-name { font-size: 14px; font-weight: 500; color: #1a1a1a; flex: 1; }
+  .chevron { font-size: 11px; color: #aaa; transition: transform 0.2s; }
+  .doc-card.open .chevron { transform: rotate(180deg); }
+
+  .doc-links { border-top: 1px solid #f0f0f0; padding: 8px 12px; display: none; }
+  .doc-card.open .doc-links { display: block; }
+
+  .doc-link {
+    display: flex; align-items: center; gap: 10px; padding: 8px 4px;
+    text-decoration: none; color: #1a1a1a; font-size: 13px;
+    border-bottom: 1px solid #f5f5f5;
+  }
+  .doc-link:last-child { border-bottom: none; }
+  .link-icon { color: #0a5c2e; width: 20px; text-align: center; }
+
+  /* Onboard Styles */
+  .onboard-steps { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+  .onboard-card {
+    background: #fff; border-radius: 12px; padding: 14px;
+    border: 1px solid #e8e8e8; text-decoration: none; display: block;
+  }
+  .onboard-num { font-size: 20px; font-weight: 700; color: #0a5c2e; }
+  .onboard-title { font-size: 13px; font-weight: 600; color: #1a1a1a; }
+
+  /* Contest Card */
+  .contest-link-card {
+    background: linear-gradient(135deg, #0a5c2e, #1a8a4a);
+    border-radius: 16px; padding: 30px 20px; text-align: center;
+    text-decoration: none; display: block; color: #fff;
+  }
+  
+  @media (max-width: 480px) {
+    .onboard-steps { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Header -->
+  <div class="lib-header">
+    <div class="lib-logo-wrap"><img src="https://via.placeholder.com/150x100?text=LOGO" alt="NNX Logo"></div>
+    <div>
+      <div class="lib-title">THƯ VIỆN TÀI LIỆU CTV</div>
+      <div class="lib-sub">Bảo Hiểm Ngôi Nhà Xanh</div>
+    </div>
+  </div>
+
+  <!-- Hotline -->
+  <div class="hotline-bar">
+    <span class="hotline-text">Hỗ trợ đối tác:</span>
+    <span class="hotline-num">1900 xxxx</span>
+  </div>
+
+  <!-- Tabs Navigation -->
+  <div class="tabs">
+    <div class="tab active" onclick="showTab('onboard')">Hội nhập</div>
+    <div class="tab" onclick="showTab('products')">Sản phẩm</div>
+    <div class="tab" onclick="showTab('sales')">Bán hàng</div>
+    <div class="tab" onclick="showTab('contest')">Thi đua</div>
+  </div>
+
+  <!-- TAB 1: HỘI NHẬP (Đã bỏ phần sản phẩm thừa) -->
+  <section id="section-onboard" class="section active">
+    <div class="card-group">
+      <div class="card-group-title">Lộ trình hội nhập</div>
+      <div class="onboard-steps">
+        <a href="#" class="onboard-card">
+          <div class="onboard-num">01</div>
+          <div class="onboard-title">Tìm hiểu NNX</div>
+        </a>
+        <a href="#" class="onboard-card">
+          <div class="onboard-num">02</div>
+          <div class="onboard-title">Chính sách CTV</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 2: SẢN PHẨM (Đã thêm nội dung độc quyền và con người) -->
+  <section id="section-products" class="section">
+    <div class="card-group">
+      <div class="card-group-title">Danh mục sản phẩm</div>
+      
+      <!-- Sản phẩm Độc quyền -->
+      <div class="doc-card">
+        <div class="doc-card-header" onclick="toggleCard(this)">
+          <span class="doc-name">Sản phẩm độc quyền NNX</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="doc-links">
+          <a href="#" class="doc-link"><span class="link-icon">📄</span><span class="link-label">Bảo hiểm Tai nạn 24/7 (Độc quyền)</span></a>
+          <a href="#" class="doc-link"><span class="link-icon">📄</span><span class="link-label">Gói khám sức khỏe đối tác</span></a>
+        </div>
+      </div>
+
+      <!-- Sản phẩm Con người -->
+      <div class="doc-card">
+        <div class="doc-card-header" onclick="toggleCard(this)">
+          <span class="doc-name">Sản phẩm Con người</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="doc-links">
+          <a href="#" class="doc-link"><span class="link-icon">📄</span><span class="link-label">Bảo hiểm Sức khỏe toàn diện</span></a>
+          <a href="#" class="doc-link"><span class="link-icon">📄</span><span class="link-label">Bảo hiểm Trợ cấp nằm viện</span></a>
+        </div>
+      </div>
+
+      <!-- Sản phẩm Xe cơ giới -->
+      <div class="doc-card">
+        <div class="doc-card-header" onclick="toggleCard(this)">
+          <span class="doc-name">Sản phẩm Xe cơ giới</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="doc-links">
+          <a href="#" class="doc-link"><span class="link-icon">📄</span><span class="link-label">Tài liệu xe máy</span></a>
+          <a href="#" class="doc-link"><span class="link-icon">📄</span><span class="link-label">Tài liệu ô tô</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 3: BÁN HÀNG (Đã lùi lề, bỏ sản phẩm thừa) -->
+  <section id="section-sales" class="section">
+    <div class="card-group">
+      <div class="card-group-title">Kỹ năng & Quy trình</div>
+      <div class="doc-card">
+        <div class="doc-card-header" onclick="toggleCard(this)">
+          <span class="doc-name">Quy trình cấp đơn online</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="doc-links">
+          <a href="#" class="doc-link"><span class="link-icon">🎥</span>Hướng dẫn sử dụng App</a>
+          <a href="#" class="doc-link"><span class="link-icon">📄</span>Xử lý lỗi thanh toán</a>
+        </div>
+      </div>
+      <div class="doc-card">
+        <div class="doc-card-header" onclick="toggleCard(this)">
+          <span class="doc-name">Bộ xử lý từ chối</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="doc-links">
+          <a href="#" class="doc-link"><span class="link-icon">📄</span>Kịch bản chốt sale</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 4: THI ĐUA (Đã lùi lề, bỏ sản phẩm thừa) -->
+  <section id="section-contest" class="section">
+    <div class="card-group">
+      <div class="card-group-title">Chương trình hiện tại</div>
+      <a href="#" class="contest-link-card">
+        <div class="contest-icon">🏆</div>
+        <div class="contest-title">Đường đua rực lửa 2024</div>
+        <div class="contest-btn">Xem chi tiết thể lệ</div>
+      </a>
+    </div>
+  </section>
+</div>
+
+<script>
+  function showTab(tabName) {
+    // Xử lý active tab button
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+
+    // Xử lý hiển thị section
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById('section-' + tabName).classList.add('active');
+  }
+
+  function toggleCard(header) {
+    const card = header.parentElement;
+    card.classList.toggle('open');
+  }
+</script>
+
+</body>
+</html>
